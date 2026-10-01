@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>brainfoot.fr | L'Académie & Coaching Football</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        pitch: {
+                            DEFAULT: '#10b981',
+                            dark: '#047857',
+                            darkest: '#022c22',
+                            neon: '#34d399'
+                        },
+                        soccer: {
+                            dark: '#090d16',
+                            card: '#131b2e',
+                            border: '#1e293b'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .pitch-pattern {
+            background-image: radial-gradient(circle, rgba(16, 185, 129, 0.25) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #090d16; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #10b981; }
+        @keyframes pulse-glow {
+            0%, 100% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+        .animate-pulse-glow { animation: pulse-glow 3s infinite ease-in-out; }
+    </style>
+</head>
+<body class="bg-soccer-dark text-slate-100 min-h-screen flex flex-col selection:bg-pitch selection:text-white">
+
+    <header class="sticky top-0 z-50 bg-soccer-dark/95 backdrop-blur-md border-b border-soccer-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-pitch to-pitch-neon flex items-center justify-center shadow-lg shadow-pitch/30">
+                    <i class="fa-solid fa-futbol text-soccer-dark text-xl font-black"></i>
+                </div>
+                <div>
+                    <span class="text-2xl font-black tracking-wider text-white">BRAIN<span class="text-pitch">FOOT</span><span class="text-xs text-pitch-neon bg-pitch/20 px-2 py-0.5 rounded-full ml-1">.fr</span></span>
+                    <p class="text-xs text-slate-400 font-medium">L'Intelligence & La Tactique au Foot</p>
+                </div>
+            </div>
+
+            <!-- Desktop Menu -->
+            <nav class="hidden lg:flex items-center space-x-1">
+                <button onclick="switchTab('home')" id="nav-home" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all text-pitch bg-pitch/10">
+                    <i class="fa-solid fa-house mr-2"></i>Accueil
+                </button>
+                <button onclick="switchTab('positions')" id="nav-positions" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all text-slate-300 hover:text-white hover:bg-slate-800">
+                    <i class="fa-solid fa-chess-board mr-2"></i>Postes & Placement
+                </button>
+                <button onclick="switchTab('tutorials')" id="nav-tutorials" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all text-slate-300 hover:text-white hover:bg-slate-800">
+                    <i class="fa-solid fa-video mr-2"></i>Tutos & Gestes
+                </button>
+                <button onclick="switchTab('drills')" id="nav-drills" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all text-slate-300 hover:text-white hover:bg-slate-800">
+                    <i class="fa-solid fa-dumbbell mr-2"></i>Exercices & Ateliers
+                </button>
+                <button onclick="switchTab('nutrition')" id="nav-nutrition" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all text-slate-300 hover:text-white hover:bg-slate-800">
+                    <i class="fa-solid fa-apple-whole mr-2"></i>Nutrition & Récup
+                </button>
+                <button onclick="switchTab('contact')" id="nav-contact" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all text-slate-300 hover:text-white hover:bg-slate-800">
+                    <i class="fa-solid fa-phone mr-2"></i>Contact & FAQ
+                </button>
+            </nav>
+
+            <!-- Mobile Menu Button -->
+            <div class="flex items-center lg:hidden">
+                <button onclick="toggleMobileMenu()" class="p-2 rounded-xl bg-slate-800 text-slate-200 hover:text-white">
+                    <i class="fa-solid fa-bars text-xl" id="mobile-menu-icon"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Nav Dropdown -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-soccer-card border-b border-soccer-border px-4 py-3 space-y-2">
+            <button onclick="switchTab('home'); toggleMobileMenu();" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-200 hover:bg-slate-800 flex items-center"><i class="fa-solid fa-house mr-3 text-pitch"></i>Accueil</button>
+            <button onclick="switchTab('positions'); toggleMobileMenu();" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-200 hover:bg-slate-800 flex items-center"><i class="fa-solid fa-chess-board mr-3 text-pitch"></i>Postes & Placement</button>
+            <button onclick="switchTab('tutorials'); toggleMobileMenu();" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-200 hover:bg-slate-800 flex items-center"><i class="fa-solid fa-video mr-3 text-pitch"></i>Tutos & Gestes</button>
+            <button onclick="switchTab('drills'); toggleMobileMenu();" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-200 hover:bg-slate-800 flex items-center"><i class="fa-solid fa-dumbbell mr-3 text-pitch"></i>Exercices & Ateliers</button>
+            <button onclick="switchTab('nutrition'); toggleMobileMenu();" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-200 hover:bg-slate-800 flex items-center"><i class="fa-solid fa-apple-whole mr-3 text-pitch"></i>Nutrition & Récup</button>
+            <button onclick="switchTab('contact'); toggleMobileMenu();" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-200 hover:bg-slate-800 flex items-center"><i class="fa-solid fa-phone mr-3 text-pitch"></i>Contact & FAQ</button>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- ==================== STREAMING_CHUNK:Rendering Home Section... ==================== -->
+        <section id="tab-home" class="space-y-12">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-emerald-950 via-soccer-card to-slate-900 border border-soccer-border p-8 md:p-14 shadow-2xl">
+                <div class="absolute -right-16 -bottom-16 w-96 h-96 bg-pitch/15 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="relative z-10 max-w-2xl space-y-6">
+                    <div class="inline-flex items-center space-x-2 bg-pitch/20 border border-pitch/30 text-pitch-neon px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
+                        <i class="fa-solid fa-bolt"></i><span>L'académie ultime du football moderne</span>
+                    </div>
+                    <h1 class="text-4xl md:text-6xl font-black text-white tracking-tight leading-none">
+                        BOOSTEZ VOTRE QI FOOT & <span class="text-transparent bg-clip-text bg-gradient-to-r from-pitch to-pitch-neon">EXPLOSEZ SUR LE TERRAIN</span>
+                    </h1>
+                    <p class="text-slate-300 text-base md:text-lg font-normal leading-relaxed">
+                        Maîtrisez votre position, perfectionnez vos gestes techniques, suivez des programmes d'entraînement sur-mesure et optimisez votre nutrition avec <strong>brainfoot.fr</strong>.
+                    </p>
+                    <div class="flex flex-wrap gap-4 pt-2">
+                        <button onclick="switchTab('positions')" class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-pitch to-pitch-dark text-white font-bold shadow-lg shadow-pitch/20 hover:opacity-95 transition-all flex items-center space-x-2">
+                            <i class="fa-solid fa-compass text-lg"></i><span>Explorer les Postes</span>
+                        </button>
+                        <button onclick="switchTab('drills')" class="px-6 py-3.5 rounded-xl bg-soccer-card border border-soccer-border text-white font-bold hover:bg-slate-800 transition-all flex items-center space-x-2">
+                            <i class="fa-solid fa-dumbbell text-sky-400"></i><span>Voir les Exercices</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Stats Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-soccer-card border border-soccer-border rounded-2xl p-6 text-center space-y-2">
+                    <div class="w-12 h-12 mx-auto rounded-xl bg-pitch/10 flex items-center justify-center text-pitch text-2xl font-bold"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div class="text-3xl font-black text-white">8+</div>
+                    <div class="text-xs text-slate-400 font-semibold uppercase">Postes Détaillés</div>
+                </div>
+                <div class="bg-soccer-card border border-soccer-border rounded-2xl p-6 text-center space-y-2">
+                    <div class="w-12 h-12 mx-auto rounded-xl bg-sky-500/10 flex items-center justify-center text-sky-400 text-2xl font-bold"><i class="fa-solid fa-video"></i></div>
+                    <div class="text-3xl font-black text-white">40+</div>
+                    <div class="text-xs text-slate-400 font-semibold uppercase">Tutos & Placement</div>
+                </div>
+                <div class="bg-soccer-card border border-soccer-border rounded-2xl p-6 text-center space-y-2">
+                    <div class="w-12 h-12 mx-auto rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400 text-2xl font-bold"><i class="fa-solid fa-apple-whole"></i></div>
+                    <div class="text-3xl font-black text-white">100%</div>
+                    <div class="text-xs text-slate-400 font-semibold uppercase">Guides Nutrition Pro</div>
+                </div>
+                <div class="bg-soccer-card border border-soccer-border rounded-2xl p-6 text-center space-y-2">
+                    <div class="w-12 h-12 mx-auto rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400 text-2xl font-bold"><i class="fa-solid fa-phone"></i></div>
+                    <div class="text-xl font-black text-white mt-1">07 81 36 25 35</div>
+                    <div class="text-xs text-slate-400 font-semibold uppercase">Support & Coaching</div>
+                </div>
+            </div>
+
+            <!-- Featured Modules Grid -->
+            <div class="space-y-6">
+                <div>
+                    <h2 class="text-2xl font-extrabold text-white">Les Piliers BrainFoot</h2>
+                    <p class="text-slate-400 text-sm">Tout ce dont un joueur a besoin pour dominer son championnat</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Card 1 -->
+                    <div onclick="switchTab('positions')" class="group cursor-pointer bg-soccer-card border border-soccer-border hover:border-pitch/50 rounded-2xl p-6 transition-all duration-300 hover:shadow-xl hover:shadow-pitch/5 space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-pitch/10 text-pitch flex items-center justify-center text-xl font-bold group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-chess-board"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white group-hover:text-pitch-neon transition-colors">Postes & Tactique</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Analyses tactiques par poste, zones d'influence, courses à effectuer et placement en phase défensive comme offensive.
+                        </p>
+                        <div class="flex items-center text-pitch text-sm font-semibold space-x-2">
+                            <span>Explorer les postes</span><i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div onclick="switchTab('tutorials')" class="group cursor-pointer bg-soccer-card border border-soccer-border hover:border-pitch/50 rounded-2xl p-6 transition-all duration-300 hover:shadow-xl hover:shadow-pitch/5 space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-sky-500/10 text-sky-400 flex items-center justify-center text-xl font-bold group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-video"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white group-hover:text-sky-400 transition-colors">Tutos de Placement</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Apprenez à vous situer par rapport au ballon, aux adversaires et à vos coéquipiers grâce à nos schémas tactiques interactifs.
+                        </p>
+                        <div class="flex items-center text-sky-400 text-sm font-semibold space-x-2">
+                            <span>Voir les tutoriels</span><i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div onclick="switchTab('drills')" class="group cursor-pointer bg-soccer-card border border-soccer-border hover:border-pitch/50 rounded-2xl p-6 transition-all duration-300 hover:shadow-xl hover:shadow-pitch/5 space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl font-bold group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-dumbbell"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white group-hover:text-amber-400 transition-colors">Exercices & Ateliers</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Ateliers classés par catégorie (Technique, Physique, Tactique, Mental) pour progresser de manière autonome ou en club.
+                        </p>
+                        <div class="flex items-center text-amber-400 text-sm font-semibold space-x-2">
+                            <span>Consulter les exercices</span><i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== STREAMING_CHUNK:Rendering Positions Section... ==================== -->
+        <section id="tab-positions" class="hidden space-y-8">
+            <div class="space-y-2">
+                <div class="inline-flex items-center space-x-2 text-pitch text-xs font-bold uppercase tracking-wider bg-pitch/10 px-3 py-1 rounded-full">
+                    <i class="fa-solid fa-chess-board"></i><span>Analyse Tactique & Placement par Poste</span>
+                </div>
+                <h2 class="text-3xl font-extrabold text-white">Maîtrisez Votre Poste sur le Bout des Doigts</h2>
+                <p class="text-slate-400 text-sm max-w-3xl">
+                    Sélectionnez un poste ci-dessous pour découvrir son rôle précis, ses consignes tactiques et visualiser sa zone d'influence sur le terrain interactif.
+                </p>
+            </div>
+
+            <!-- Position Selector Tabs -->
+            <div class="flex overflow-x-auto pb-2 gap-2 scrollbar-none" id="position-buttons-container">
+                <!-- Injected via JavaScript -->
+            </div>
+
+            <!-- Position Detail Card -->
+            <div class="bg-soccer-card border border-soccer-border rounded-3xl p-6 md:p-8 space-y-8 shadow-xl">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-soccer-border pb-6">
+                    <div class="flex items-center space-x-4">
+                        <div id="pos-icon-box" class="w-16 h-16 rounded-2xl bg-pitch/20 text-pitch flex items-center justify-center text-3xl font-black">
+                            <i class="fa-solid fa-shield"></i>
+                        </div>
+                        <div>
+                            <span id="pos-category" class="text-xs font-bold px-2.5 py-1 rounded-md bg-pitch/10 text-pitch uppercase tracking-wide">Défense</span>
+                            <h3 id="pos-title" class="text-2xl md:text-3xl font-black text-white mt-1">Gardien de But (GB)</h3>
+                        </div>
+                    </div>
+                    <div class="bg-slate-900 border border-soccer-border px-4 py-2 rounded-xl text-xs font-medium text-slate-300">
+                        <i class="fa-solid fa-stopwatch mr-2 text-pitch"></i>Intensité Tactique: <span id="pos-intensity" class="text-white font-bold">Élevée</span>
+                    </div>
+                </div>
+
+                <!-- Content Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Left: Description & Qualities -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <div class="space-y-3">
+                            <h4 class="text-lg font-bold text-white flex items-center"><i class="fa-solid fa-bullseye text-pitch mr-2"></i>Rôle & Mission Principale</h4>
+                            <p id="pos-desc" class="text-slate-300 text-sm leading-relaxed bg-slate-900/50 p-4 rounded-2xl border border-soccer-border">
+                                Chargé d'empêcher le ballon de franchir la ligne de but, il est aussi le premier relanceur de l'équipe et le patron de sa défense.
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-slate-900/50 border border-soccer-border p-4 rounded-2xl space-y-3">
+                                <h5 class="font-bold text-pitch text-sm uppercase tracking-wider flex items-center"><i class="fa-solid fa-check-circle mr-2"></i>Qualités Requises</h5>
+                                <ul id="pos-qualities" class="space-y-2 text-sm text-slate-300">
+                                    <!-- Injected -->
+                                </ul>
+                            </div>
+                            <div class="bg-slate-900/50 border border-soccer-border p-4 rounded-2xl space-y-3">
+                                <h5 class="font-bold text-rose-400 text-sm uppercase tracking-wider flex items-center"><i class="fa-solid fa-triangle-exclamation mr-2"></i>Erreurs à Éviter</h5>
+                                <ul id="pos-errors" class="space-y-2 text-sm text-slate-300">
+                                    <!-- Injected -->
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <h4 class="text-lg font-bold text-white flex items-center"><i class="fa-solid fa-route text-sky-400 mr-2"></i>Consignes de Déplacement (Phases de Jeu)</h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="bg-sky-950/20 border border-sky-500/20 p-4 rounded-2xl space-y-2">
+                                    <span class="text-xs font-bold text-sky-400 uppercase tracking-wider">En Phase Offensive (Avec Ballon)</span>
+                                    <p id="pos-attack-tips" class="text-xs text-slate-300 leading-relaxed">Proposer des solutions, monter haut pour couvrir la défense...</p>
+                                </div>
+                                <div class="bg-emerald-950/20 border border-pitch/20 p-4 rounded-2xl space-y-2">
+                                    <span class="text-xs font-bold text-pitch-neon uppercase tracking-wider">En Phase Défensive (Sans Ballon)</span>
+                                    <p id="pos-defense-tips" class="text-xs text-slate-300 leading-relaxed">Communication, alignement, lecture des trajectoires...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Tactical Pitch Visualizer -->
+                    <div class="bg-slate-900 border border-soccer-border rounded-2xl p-5 flex flex-col items-center justify-between space-y-4">
+                        <div class="w-full flex items-center justify-between">
+                            <span class="text-xs font-bold text-slate-400 uppercase">Zone d'Influence Tactique</span>
+                            <span id="pos-code-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-pitch/20 text-pitch">GB</span>
+                        </div>
+
+                        <!-- Mini Soccer Pitch Graphic -->
+                        <div class="relative w-full h-72 bg-emerald-950 border-2 border-emerald-600/40 rounded-xl overflow-hidden pitch-pattern flex items-center justify-center shadow-inner">
+                            <div class="absolute inset-x-0 top-1/2 h-0.5 bg-emerald-600/40"></div>
+                            <div class="absolute w-20 h-20 rounded-full border-2 border-emerald-600/40"></div>
+                            <div class="absolute top-0 w-32 h-12 border-b-2 border-x-2 border-emerald-600/40"></div>
+                            <div class="absolute bottom-0 w-32 h-12 border-t-2 border-x-2 border-emerald-600/40"></div>
+                            
+                            <div id="pitch-player-dot" class="absolute w-10 h-10 rounded-full bg-pitch text-soccer-dark font-black text-xs flex items-center justify-center shadow-lg shadow-pitch animate-pulse-glow border-2 border-white">
+                                GB
+                            </div>
+                        </div>
+
+                        <p id="pos-pitch-desc" class="text-xs text-slate-400 text-center italic">
+                            Zone de responsabilité principale sur le terrain.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== STREAMING_CHUNK:Rendering Tutorials Section... ==================== -->
+        <section id="tab-tutorials" class="hidden space-y-8">
+            <div class="space-y-2">
+                <div class="inline-flex items-center space-x-2 text-sky-400 text-xs font-bold uppercase tracking-wider bg-sky-500/10 px-3 py-1 rounded-full">
+                    <i class="fa-solid fa-video"></i><span>Tutoriels Vidéo & Placement Tactique</span>
+                </div>
+                <h2 class="text-3xl font-extrabold text-white">Guides Visuels & Maîtrise des Gestes Techniques</h2>
+                <p class="text-slate-400 text-sm max-w-3xl">
+                    Découvrez nos masterclass tactiques pour comprendre comment coulisser en bloc, réussir vos contrôles orientés sous pression et exécuter les gestes décisifs.
+                </p>
+            </div>
+
+            <!-- Tutorials Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="tutorials-grid">
+                <!-- Injected via JavaScript -->
+            </div>
+        </section>
+
+        <!-- ==================== STREAMING_CHUNK:Rendering Drills Section... ==================== -->
+        <section id="tab-drills" class="hidden space-y-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div class="space-y-2">
+                    <div class="inline-flex items-center space-x-2 text-sky-400 text-xs font-bold uppercase tracking-wider bg-sky-500/10 px-3 py-1 rounded-full">
+                        <i class="fa-solid fa-dumbbell"></i><span>Ateliers Pratiques & Entraînements</span>
+                    </div>
+                    <h2 class="text-3xl font-extrabold text-white">Exercices Classés par Catégorie</h2>
+                    <p class="text-slate-400 text-sm">
+                        Sélectionnez une catégorie pour filtrer les ateliers de progression (Technique, Physique, Tactique, Mental).
+                    </p>
+                </div>
+                <!-- Filter buttons -->
+                <div class="flex flex-wrap gap-2" id="drill-filters">
+                    <button onclick="filterDrills('all')" class="drill-filter-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-pitch text-soccer-dark">Tous</button>
+                    <button onclick="filterDrills('Technique')" class="drill-filter-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-soccer-card border border-soccer-border text-slate-300 hover:text-white">Technique</button>
+                    <button onclick="filterDrills('Physique')" class="drill-filter-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-soccer-card border border-soccer-border text-slate-300 hover:text-white">Physique & Vitesse</button>
+                    <button onclick="filterDrills('Tactique')" class="drill-filter-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-soccer-card border border-soccer-border text-slate-300 hover:text-white">Tactique</button>
+                    <button onclick="filterDrills('Mental')" class="drill-filter-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-soccer-card border border-soccer-border text-slate-300 hover:text-white">Mental & Focus</button>
+                </div>
+            </div>
+
+            <!-- Drill Cards Grid -->
+            <div id="drills-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Injected via JavaScript -->
+            </div>
+        </section>
+
+        <!-- ==================== STREAMING_CHUNK:Rendering Nutrition Section... ==================== -->
+        <section id="tab-nutrition" class="hidden space-y-8">
+            <div class="space-y-2">
+                <div class="inline-flex items-center space-x-2 text-amber-400 text-xs font-bold uppercase tracking-wider bg-amber-500/10 px-3 py-1 rounded-full">
+                    <i class="fa-solid fa-apple-whole"></i><span>Carburant du Footeux & Récupération</span>
+                </div>
+                <h2 class="text-3xl font-extrabold text-white">Nutrition, Hydratation & Prise de Masse/Sèche</h2>
+                <p class="text-slate-400 text-sm max-w-3xl">
+                    Retrouvez tous les protocoles nutritionnels professionnels pour optimiser votre endurance, vos sprints et votre récupération musculaire.
+                </p>
+            </div>
+
+            <!-- Nutrition Navigation Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card Pre Match -->
+                <div class="bg-soccer-card border border-soccer-border rounded-3xl p-6 space-y-4">
+                    <div class="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-sun"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Avant le Match (J-1 & Repas J)</h3>
+                    <ul class="space-y-3 text-sm text-slate-300">
+                        <li class="flex items-start space-x-2"><i class="fa-solid fa-check text-pitch mt-1"></i><span><strong>J-1 (Glycogène) :</strong> Glucides complexes (pâtes, riz semi-complet, patate douce) pour saturer les réserves.</span></li>
+                        <li class="flex items-start space-x-2"><i class="fa-solid fa-check text-pitch mt-1"></i><span><strong>Repas d'avant-match (J-3h) :</strong> Pauvre en graisses et fibres pour faciliter la digestion (blanc de poulet, riz blanc).</span></li>
+                        <li class="flex items-start space-x-2"><i class="fa-solid fa-check text-pitch mt-1"></i><span><strong>Hydratation :</strong> Boire 500ml d'eau par petites gorgées jusqu'à 1h avant le coup d'envoi.</span></li>
+                    </ul>
+                </div>
+
+                <!-- Card During Match -->
+                <div class="bg-soccer-card border border-soccer-border rounded-3xl p-6 space-y-4">
+                    <div class="w-12 h-12 rounded-2xl bg-sky-500/10 text-sky-400 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Pendant le Match & Mi-temps</h3>
+                    <ul class="space-y-3 text-sm text-slate-300">
+                        <li class="flex items-start space-x-2"><i class="fa-solid fa-check text-pitch mt-1"></i><span><strong>Hydratation :</strong> Boisson isotonique à la mi-temps pour recharger les électrolytes perdus.</span></li>
+                        <li class="flex items-start space-x-2"><i class="fa-solid fa-check text-pitch mt-1"></i><span><strong>Coup de boost :</strong> Consommer une compote ou une pâte de fruit (glucides rapides) à la pause.</span></li>
+                        <li class="flex items-start space-x-2"><i class="fa-solid fa-check text-pitch mt-1"></i><span><strong>Éviter :</strong> Les boissons gazeuses et trop sucrées qui coupent les jambes.</span></li>
+                    </ul>
+                </div>
+
+                <!-- Card Post Match -->
+                <div class="bg-soccer-card border border-soccer-border rounded-3xl p-6 space-y-4">
+                    <div class="w-12 h-12 rounded-2xl bg-pitch/10 text-pitch flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-bed"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Récupération & Post-Match</h3>
+                    <ul class="space-y-3 text-sm text-slate-300">
+                        <li class="flex items-start space-x-2"><i class="fa-solid fa-check text-pitch mt-1"></i><span><strong>Fenêtre métabolique (0-2h) :</strong> Protéines (réparation musculaire) + Glucides (recharge).</span></li>
+                        <li class="flex items-start space-x-2"><i class="fa-solid fa-check text-pitch mt-1"></i><span><strong>Sommeil Pro :</strong> 8 à 9 heures de sommeil minimum pour stimuler l'hormone de croissance.</span></li>
+                        <li class="flex items-start space-x-2"><i class="fa-solid fa-check text-pitch mt-1"></i><span><strong>Récupération active :</strong> Bain froid ou marche légère le lendemain.</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Diet Goals / Weight Management -->
+            <div class="bg-soccer-card border border-soccer-border rounded-3xl p-8 space-y-6">
+                <h3 class="text-2xl font-black text-white flex items-center"><i class="fa-solid fa-scale-balanced text-pitch mr-3"></i>Prise de Masse vs Sèche pour le Footeux</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-slate-900/60 p-6 rounded-2xl border border-soccer-border space-y-3">
+                        <h4 class="text-lg font-bold text-pitch-neon">📈 Prise de Masse Propre (Duels & Impact)</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            Augmenter l'apport calorique de 300 kcal au-dessus de la maintenance. Miser sur les protéines maigres (œufs, dinde, thon, poulet) et les bons lipides (avocat, amandes) tout en maintenant un gros volume de glucides pour garder l'explosivité sur les démarrages.
+                        </p>
+                    </div>
+                    <div class="bg-slate-900/60 p-6 rounded-2xl border border-soccer-border space-y-3">
+                        <h4 class="text-lg font-bold text-amber-400">🔥 Sèche & Agilité (Ratio Poids/Vitesse)</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            Léger déficit calorique (-200 kcal). Réduction progressive des graisses saturées, augmentation des légumes verts et maintien d'un apport élevé en protéines (1.8g à 2g / kg) pour préserver la masse musculaire et maximiser la vitesse sur les premiers appuis.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== STREAMING_CHUNK:Rendering Contact & FAQ Section... ==================== -->
+        <section id="tab-contact" class="hidden space-y-8 max-w-4xl mx-auto">
+            <div class="text-center space-y-2">
+                <div class="inline-flex items-center space-x-2 text-pitch text-xs font-bold uppercase tracking-wider bg-pitch/10 px-3 py-1 rounded-full">
+                    <i class="fa-solid fa-phone"></i><span>Support & Contact Officiel</span>
+                </div>
+                <h2 class="text-3xl font-extrabold text-white">Contactez l'Équipe BrainFoot</h2>
+                <p class="text-slate-400 text-sm">
+                    Une question sur un programme d'entraînement ou un accompagnement ? Contactez notre hotline officielle au <strong class="text-pitch-neon">07 81 36 25 35</strong>.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Phone Box -->
+                <div class="bg-soccer-card border border-soccer-border rounded-3xl p-6 text-center space-y-4 flex flex-col justify-between">
+                    <div class="w-14 h-14 mx-auto rounded-2xl bg-pitch/10 text-pitch flex items-center justify-center text-2xl font-bold">
+                        <i class="fa-solid fa-phone"></i>
+                    </div>
+                    <div class="space-y-1">
+                        <h3 class="font-bold text-white text-lg">Téléphone Officiel</h3>
+                        <p class="text-2xl font-black text-pitch-neon tracking-wider">07 81 36 25 35</p>
+                        <p class="text-xs text-slate-400">Du Lundi au Samedi, 9h - 19h</p>
+                    </div>
+                    <a href="tel:0781362535" class="w-full py-3 rounded-xl bg-pitch text-soccer-dark font-bold text-xs uppercase tracking-wider shadow hover:opacity-90 transition-all flex items-center justify-center">
+                        <i class="fa-solid fa-phone-volume mr-2"></i>Appeler Maintenant
+                    </a>
+                </div>
+
+                <!-- Form Box -->
+                <div class="md:col-span-2 bg-soccer-card border border-soccer-border rounded-3xl p-8 shadow-2xl">
+                    <form onsubmit="handleContactSubmit(event)" class="space-y-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="space-y-2">
+                                <label class="text-xs font-bold text-slate-300 uppercase tracking-wider">Votre Nom</label>
+                                <input type="text" id="contact-name" required placeholder="Ex: Kylian Mbappé" class="w-full bg-slate-900 border border-soccer-border rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-pitch transition-colors">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-xs font-bold text-slate-300 uppercase tracking-wider">Votre Téléphone / Email</label>
+                                <input type="text" id="contact-info" required placeholder="Ex: 06 12 34 56 78" class="w-full bg-slate-900 border border-soccer-border rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-pitch transition-colors">
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold text-slate-300 uppercase tracking-wider">Votre Message / Question</label>
+                            <textarea id="contact-message" required rows="4" placeholder="Posez votre question sur les postes, la nutrition ou le coaching..." class="w-full bg-slate-900 border border-soccer-border rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-pitch transition-colors"></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-pitch to-pitch-dark text-soccer-dark font-black shadow-lg shadow-pitch/20 hover:opacity-95 transition-all">
+                            Envoyer le Message
+                        </button>
+                    </form>
+                    <div id="contact-success" class="hidden mt-4 p-4 rounded-xl bg-pitch/20 border border-pitch/30 text-pitch-neon text-center text-sm font-semibold">
+                        <i class="fa-solid fa-circle-check mr-2"></i>Message envoyé ! L'équipe vous répondra ou vous contactera au 07 81 36 25 35 sous 24h.
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Section -->
+            <div class="bg-soccer-card border border-soccer-border rounded-3xl p-8 space-y-6 mt-8">
+                <h3 class="text-2xl font-black text-white flex items-center"><i class="fa-solid fa-circle-question text-sky-400 mr-3"></i>Foire Aux Questions (FAQ)</h3>
+                <div class="space-y-4">
+                    <div class="bg-slate-900/60 p-5 rounded-2xl border border-soccer-border space-y-2">
+                        <h4 class="font-bold text-white text-base">Comment utiliser les exercices pour progresser seul ?</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed">Chaque atelier est conçu pour être réalisé avec un minimum de matériel (plots, ballon, mur). Nous conseillons 3 sessions de 25 minutes par semaine en complément des entraînements en club.</p>
+                    </div>
+                    <div class="bg-slate-900/60 p-5 rounded-2xl border border-soccer-border space-y-2">
+                        <h4 class="font-bold text-white text-base">Le site est-il adapté à tous les âges et niveaux ?</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed">Oui, de U13 jusqu'aux seniors R1/N3, les principes tactiques de placement et les exigences nutritionnelles s'adaptent au niveau d'intensité recherché.</p>
+                    </div>
+                    <div class="bg-slate-900/60 p-5 rounded-2xl border border-soccer-border space-y-2">
+                        <h4 class="font-bold text-white text-base">Puis-je appeler directement le support téléphonique ?</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed">Absolument ! Notre ligne officielle est joignable au <strong>07 81 36 25 35</strong> du lundi au samedi pour toute question sur nos programmes.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-soccer-card border-t border-soccer-border mt-16 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-lg bg-pitch flex items-center justify-center">
+                    <i class="fa-solid fa-futbol text-soccer-dark text-xs font-black"></i>
+                </div>
+                <span class="text-lg font-black text-white">BRAIN<span class="text-pitch">FOOT</span><span class="text-xs text-pitch-neon">.fr</span></span>
+            </div>
+            <p class="text-xs text-slate-400 text-center">
+                © 2026 brainfoot.fr — Hotline Officielle : <span class="text-white font-bold">07 81 36 25 35</span>. Tous droits réservés.
+            </p>
+            <div class="flex space-x-4 text-slate-400">
+                <a href="#" class="hover:text-pitch transition-colors"><i class="fa-brands fa-instagram text-lg"></i></a>
+                <a href="#" class="hover:text-pitch transition-colors"><i class="fa-brands fa-tiktok text-lg"></i></a>
+                <a href="#" class="hover:text-pitch transition-colors"><i class="fa-brands fa-youtube text-lg"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Database of Positions
+        const positionsData = [
+            {
+                id: 'gb',
+                code: 'GB',
+                title: 'Gardien de But',
+                category: 'Défense',
+                intensity: 'Élevée (Concentration)',
+                icon: 'fa-shield-halved',
+                desc: 'Dernier rempart et premier relanceur. Le gardien moderne doit rassurer sa défense, anticiper les sorties aériennes et participer activement à la relance au pied.',
+                qualities: ['Jeu au pied précis', 'Lecture des trajectoires', 'Leadership vocal', 'Explosivité sur sa ligne'],
+                errors: ['Rester collé sur sa ligne', 'Hésiter dans ses sorties aériennes', 'Relâcher la concentration après 80 min'],
+                attackTips: 'Venir en soutien derrière les centraux pour offrir une solution de relance courte et sécurisée.',
+                defenseTips: 'Organiser le mur, diriger son bloc défensif et anticiper les ballons dans le dos.',
+                pitchPos: { top: '85%', left: '50%' }
+            },
+            {
+                id: 'dc',
+                code: 'DC',
+                title: 'Défenseur Central',
+                category: 'Défense',
+                intensity: 'Maximale (Duels)',
+                icon: 'fa-shield',
+                desc: 'Maître de la surface et roc défensif. Le défenseur central gagne ses duels, anticipe les appels en profondeur et impulse la première relance propre.',
+                qualities: ['Jeu de tête dominant', 'Sens du placement', 'Calme sous pressing', 'Impact dans les duels'],
+                errors: ['Serrer trop près et se faire éliminer en pivot', 'Manquer d’alignement avec sa ligne', 'Relancer dans l’axe sous pression'],
+                attackTips: 'Monter d’un cran pour couper les contres adverses et offrir une relance propre vers les milieux.',
+                defenseTips: 'Rester compact avec le latéral, communiquer et fermer l’axe en priorité.',
+                pitchPos: { top: '70%', left: '50%' }
+            },
+            {
+                id: 'lat',
+                code: 'LAT',
+                title: 'Latéral (Défenseur Latéral)',
+                category: 'Défense / Attaque',
+                intensity: 'Très Élevée (Vitesse)',
+                icon: 'fa-person-running',
+                desc: 'Le piston du couloir. Il défend sur les ailier adverses tout en avalant les kilomètres pour apporter le danger par ses centres dans la surface.',
+                qualities: ['Vitesse et endurance aérobie', 'Qualité de centre', 'Lecture des 1v1 défensifs', 'Intelligence des courses'],
+                errors: ['Être pris dans son dos sur les transversales', 'Oublier de fermer l’axe (côté opposé)', 'Épuisement par des montées inutiles'],
+                attackTips: 'Déborder le long de la ligne de touche ou repiquer dans l’intervalle pour centrer ou combiner.',
+                defenseTips: 'Fermer l’angle de tir, orienter l’ailier vers l’extérieur et couvrir son défenseur central.',
+                pitchPos: { top: '65%', left: '85%' }
+            },
+            {
+                id: 'mdf',
+                code: 'MDF',
+                title: 'Milieu Défensif (Numéro 6)',
+                category: 'Milieu',
+                intensity: 'Maximale (Volume)',
+                icon: 'fa-anchor',
+                desc: 'La sentinelle et le régulateur. Il ratisse un volume incroyable de ballons devant la défense et oriente le jeu avec simplicité et efficacité.',
+                qualities: ['Interception & Lecture du jeu', 'Jeu court et transition rapide', 'Volume de course XXL', 'Intelligence tactique'],
+                errors: ['Se faire éliminer par un crochet trop facile', 'Garder le ballon trop longtemps dans sa zone', 'Laisser un boulevard entre la défense et le milieu'],
+                attackTips: 'Venir chercher le ballon entre les centraux et orienter le jeu vers les zones libres.',
+                defenseTips: 'Colmater les brèches, couper les lignes de passe adverses vers l’attaquant pivot.',
+                pitchPos: { top: '50%', left: '50%' }
+            },
+            {
+                id: 'mr',
+                code: 'MR',
+                title: 'Milieu Relayeur (Numéro 8)',
+                category: 'Milieu',
+                intensity: 'Maximale (Box-to-Box)',
+                icon: 'fa-arrows-split-up-and-left',
+                desc: 'Le moteur de l’équipe. Capable d’apporter le surnombre offensivement tout en redescendant prêter main-forte à la récupération.',
+                qualities: ['Endurance hors norme', 'Capacité de projection', 'Vision à 360°', 'Frappe de loin'],
+                errors: ['Oublier de redescendre en phase défensive', 'Faire des courses désordonnées sans ballon', 'Abuser des passes risquées'],
+                attackTips: 'Se projeter dans la surface adverse pour créer le surnombre et marquer en seconde lame.',
+                defenseTips: 'Venir presser le milieu adverse dès la perte de balle et fermer les passes axiales.',
+                pitchPos: { top: '40%', left: '35%' }
+            },
+            {
+                id: 'mo',
+                code: 'MO',
+                title: 'Milieu Offensif (Numéro 10)',
+                category: 'Attaque',
+                intensity: 'Élevée (Créativité)',
+                icon: 'fa-wand-magic-sparkles',
+                desc: 'L’architecte des 30 derniers mètres. Il trouve les failles dans les défenses regroupées par ses passes aveugles et sa vision géniale.',
+                qualities: ['Créativité & Dernière passe', 'Contrôle orienté sous pression', 'Sens du timing', 'Frappe chirurgicale'],
+                errors: ['Ne pas fournir d’effort défensif minimum', 'S’empiler dans les zones denses sans solution', 'Manquer de simplicité'],
+                attackTips: 'Se positionner entre les lignes adverses pour recevoir le ballon dos au jeu ou face au jeu.',
+                defenseTips: 'Exercer un premier pressing sur le milieu défensif adverse pour l’empêcher de relancer propre.',
+                pitchPos: { top: '30%', left: '50%' }
+            },
+            {
+                id: 'ail',
+                code: 'AIL',
+                title: 'Ailier (Attaquant de Couloir)',
+                category: 'Attaque',
+                intensity: 'Très Élevée (Explosivité)',
+                icon: 'fa-bolt',
+                desc: 'L’accélérateur de particules. Il martyrise les latéraux adverses par ses dribbles fulgurants, ses percussions et ses buts ou passes décisives.',
+                qualities: ['Explosivité & Dribble en 1v1', 'Finition au second poteau', 'Jeu sans ballon (appels tranchants)', 'Sang-froid'],
+                errors: ['Garder trop le ballon au lieu de lâcher au bon moment', 'Oublier de replier défendre sur le latéral adverse'],
+                attackTips: 'Proposer des appels dans la profondeur ou repiquer dans l’axe pour armer une frappe enroulée.',
+                defenseTips: 'Suivre les montées du latéral adverse pour empêcher le surnombre dans son couloir.',
+                pitchPos: { top: '25%', left: '85%' }
+            },
+            {
+                id: 'but',
+                code: 'BUT',
+                title: 'Buteur / Avant-Centre (Numéro 9)',
+                category: 'Attaque',
+                intensity: 'Maximale (Intensité & Sang-froid)',
+                icon: 'fa-bullseye',
+                desc: 'Le tueur des surfaces. Son unique obsession est de transformer la moindre occasion en but et de fixer la charnière adverse.',
+                qualities: ['Instinct de buteur & Finition', 'Jeu en pivot (dos au jeu)', 'Appels en rupture', 'Mental d’acier'],
+                errors: ['Sortir de son match après un raté', 'Rester statique sans proposer d’appel', 'Manquer d’agressivité sur les ballons traînants'],
+                attackTips: 'Varier les appels (contre-appel, profondeur, appui) et couper la trajectoire au premier ou second poteau.',
+                defenseTips: 'Initier le pressing haut en bloquant la relance du gardien ou du défenseur central principal.',
+                pitchPos: { top: '15%', left: '50%' }
+            }
+        ];
+
+        // Database of Tutorials
+        const tutorialsData = [
+            {
+                title: 'Le Coulissage en Bloc Défensif',
+                category: 'Tactique & Placement',
+                duration: '8 min',
+                desc: 'Comment basculer collectivement du côté du ballon pour interdire toute passe axiale à l’adversaire.',
+                steps: ['Identifier le porteur de balle', 'Le bloc latéral coulisse à 3m', 'Le milieu axial ferme l’intervalle']
+            },
+            {
+                title: 'Le Contrôle Orienté sous Pressing',
+                category: 'Technique',
+                duration: '6 min',
+                desc: 'Utiliser son corps en opposition pour éliminer son vis-à-vis dès la réception de passe.',
+                steps: ['Analyser l’information avant de recevoir', 'Effacer l’adversaire avec le pied opposé', 'Accélérer sur le premier appui']
+            },
+            {
+                title: 'Le Appel / Contre-Appel de l’Attaquant',
+                category: 'Placement Offensif',
+                duration: '10 min',
+                desc: 'Le secret des grands numéros 9 pour se défaire du marquage serré des défenseurs centraux.',
+                steps: ['Faire un faux appel vers le porteur', 'Freiner net et plonger dans le dos', 'Demander le ballon dans l’espace']
+            },
+            {
+                title: 'Le Pressing Coordonné (Déclencheur)',
+                category: 'Tactique',
+                duration: '7 min',
+                desc: 'Quand et comment déclencher le pressing en équipe lors d’une passe en retrait adverse.',
+                steps: ['Le déclencheur est la passe en arrière', 'Sprinter vers le porteur pour fermer l’angle', 'Le bloc monte de 15 mètres']
+            },
+            {
+                title: 'La Feinte de Corps & Frappe Enroulée',
+                category: 'Finition',
+                duration: '5 min',
+                desc: 'Maîtriser le geste signature des meilleurs ailier pour enrouler le ballon dans le petit filet opposé.',
+                steps: ['Fixer le défenseur à l’arrêt', 'Ouvrir le pied en armant la frappe', 'Enrouler avec l’intérieur du pied']
+            },
+            {
+                title: 'La Relance Propre sous Pression (Numéro 6)',
+                category: 'Tactique',
+                duration: '9 min',
+                desc: 'Se libérer du marquage d’un joueur offensif adverse pour orienter le jeu en une touche.',
+                steps: ['Offrir une solution en 3ème homme', 'Orienter le contrôle vers la zone libre', 'Transmettre rapidement au relayeur']
+            }
+        ];
+
+        // Database of Drills
+        const drillsData = [
+            {
+                title: 'Le Carré de Rondo 4v2',
+                category: 'Technique',
+                level: 'Tous Niveaux',
+                duration: '15 min',
+                goal: 'Améliorer la vitesse de transmission, le jeu en une touche et la vision sous pressing.',
+                equipment: 'Cônes, 1 ballon, chasubles.',
+                steps: 'Dans un carré de 10x10m, 4 attaquants gardent le ballon face à 2 défenseurs au centre. Maximum 2 touches de balle par joueur.'
+            },
+            {
+                title: 'Circuit de Vivacité & Appuis',
+                category: 'Physique',
+                level: 'Intermédiaire / Pro',
+                duration: '20 min',
+                goal: 'Développer la fréquence gestuelle, l’explosivité des premiers appuis et le changement de direction.',
+                equipment: 'Échelle de vitesse, 4 mini-haies, plots.',
+                steps: 'Enchaîner échelle de pas chassés, sauts pieds joints par-dessus les haies, sprint court de 10 mètres avec changement d’angle à 90°.'
+            },
+            {
+                title: 'Finition 1v1 Face au Gardien + Frappe Sec',
+                category: 'Technique',
+                level: 'Tous Niveaux',
+                duration: '20 min',
+                goal: 'Gagner en sang-froid dans la surface et éliminer le dernier défenseur.',
+                equipment: 'Buts, ballons, 2 plots.',
+                steps: 'L’attaquant reçoit une passe dos au but, effectue un contrôle orienté pour éliminer le défenseur en 1v1 et décoche une frappe sèche.'
+            },
+            {
+                title: 'Conservation 6v6 avec 3 Neutres',
+                category: 'Tactique',
+                level: 'Avancé',
+                duration: '25 min',
+                goal: 'Travailler la supériorité numérique et la circulation du ballon d’un côté à l’autre du terrain.',
+                equipment: 'Grand terrain réduit, chasubles, buts.',
+                steps: 'Deux équipes de 6 s’affrontent avec l’aide de 3 joueurs neutres positionnés à l’intérieur et sur les côtés pour assurer la conservation.'
+            },
+            {
+                title: 'Tabata Vitesse & Récupération (HIIT)',
+                category: 'Physique',
+                level: 'Avancé',
+                duration: '12 min',
+                goal: 'Reproduire les efforts répétés à haute intensité caractéristiques des matchs de haut niveau.',
+                equipment: 'Chronographe, sifflet, plots.',
+                steps: '20 secondes de sprint maximal aller-retour entre deux plots, suivi de 10 secondes de repos complet. Répéter 8 fois par série.'
+            },
+            {
+                title: 'Exercice de Gestion du Stress & Focus (Mental)',
+                category: 'Mental',
+                level: 'Tous Niveaux',
+                duration: '10 min',
+                goal: 'S’entraîner à rester lucide après un raté ou une erreur technique en match.',
+                equipment: 'Ballon, mur de rebond.',
+                steps: 'Enchaîner 20 passes précises sur le mur en contrôlant sa respiration et en visualisant le prochain geste réussi.'
+            }
+        ];
+
+        // State variables
+        let currentTab = 'home';
+        let currentPositionId = 'gb';
+        let currentDrillFilter = 'all';
+
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            currentTab = tabId;
+            const tabs = ['home', 'positions', 'tutorials', 'drills', 'nutrition', 'contact'];
+            
+            tabs.forEach(t => {
+                const section = document.getElementById(`tab-${t}`);
+                const btn = document.getElementById(`nav-${t}`);
+                if (section) {
+                    if (t === tabId) {
+                        section.classList.remove('hidden');
+                    } else {
+                        section.classList.add('hidden');
+                    }
+                }
+                if (btn) {
+                    if (t === tabId) {
+                        btn.className = "nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all text-pitch bg-pitch/10";
+                    } else {
+                        btn.className = "nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all text-slate-300 hover:text-white hover:bg-slate-800";
+                    }
+                }
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('mobile-menu-icon');
+            menu.classList.toggle('hidden');
+            if (menu.classList.contains('hidden')) {
+                icon.className = "fa-solid fa-bars text-xl";
+            } else {
+                icon.className = "fa-solid fa-xmark text-xl";
+            }
+        }
+
+        // Render Positions UI
+        function renderPositions() {
+            const container = document.getElementById('position-buttons-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            positionsData.forEach(pos => {
+                const isActive = pos.id === currentPositionId;
+                const btn = document.createElement('button');
+                btn.className = `px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center space-x-2 ${isActive ? 'bg-pitch text-soccer-dark shadow-lg shadow-pitch/20' : 'bg-soccer-card border border-soccer-border text-slate-300 hover:text-white'}`;
+                btn.innerHTML = `<i class="fa-solid ${pos.icon}"></i><span>${pos.title}</span>`;
+                btn.onclick = () => selectPosition(pos.id);
+                container.appendChild(btn);
+            });
+
+            // Update Details
+            const pos = positionsData.find(p => p.id === currentPositionId);
+            if (!pos) return;
+
+            document.getElementById('pos-icon-box').innerHTML = `<i class="fa-solid ${pos.icon}"></i>`;
+            document.getElementById('pos-category').innerText = pos.category;
+            document.getElementById('pos-title').innerText = pos.title;
+            document.getElementById('pos-intensity').innerText = pos.intensity;
+            document.getElementById('pos-desc').innerText = pos.desc;
+            document.getElementById('pos-code-badge').innerText = pos.code;
+            document.getElementById('pos-attack-tips').innerText = pos.attackTips;
+            document.getElementById('pos-defense-tips').innerText = pos.defenseTips;
+
+            // Render Qualities
+            const qualList = document.getElementById('pos-qualities');
+            qualList.innerHTML = '';
+            pos.qualities.forEach(q => {
+                const li = document.createElement('li');
+                li.className = 'flex items-center space-x-2';
+                li.innerHTML = `<i class="fa-solid fa-check text-pitch text-xs"></i><span>${q}</span>`;
+                qualList.appendChild(li);
+            });
+
+            // Render Errors
+            const errList = document.getElementById('pos-errors');
+            errList.innerHTML = '';
+            pos.errors.forEach(e => {
+                const li = document.createElement('li');
+                li.className = 'flex items-center space-x-2';
+                li.innerHTML = `<i class="fa-solid fa-xmark text-rose-400 text-xs"></i><span>${e}</span>`;
+                errList.appendChild(li);
+            });
+
+            // Update Pitch Dot position & text
+            const dot = document.getElementById('pitch-player-dot');
+            dot.style.top = pos.pitchPos.top;
+            dot.style.left = pos.pitchPos.left;
+            dot.innerText = pos.code;
+        }
+
+        function selectPosition(id) {
+            currentPositionId = id;
+            renderPositions();
+        }
+
+        // Render Tutorials UI
+        function renderTutorials() {
+            const grid = document.getElementById('tutorials-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            tutorialsData.forEach(tut => {
+                const card = document.createElement('div');
+                card.className = 'bg-soccer-card border border-soccer-border rounded-3xl p-6 space-y-4 hover:border-sky-500/40 transition-all shadow-lg flex flex-col justify-between';
+                card.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold px-3 py-1 rounded-full bg-sky-500/10 text-sky-400 uppercase">${tut.category}</span>
+                            <span class="text-xs text-slate-400 font-semibold"><i class="fa-solid fa-stopwatch text-sky-400 mr-1"></i>${tut.duration}</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">${tut.title}</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed">${tut.desc}</p>
+                    </div>
+                    <div class="border-t border-soccer-border pt-4 space-y-2 text-xs text-slate-400">
+                        <span class="font-bold text-slate-200">Étapes Clés :</span>
+                        <ul class="space-y-1">
+                            ${tut.steps.map(s => `<li class="flex items-center space-x-2"><i class="fa-solid fa-play text-[10px] text-sky-400"></i><span>${s}</span></li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Render Drills UI
+        function renderDrills() {
+            const grid = document.getElementById('drills-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            const filtered = currentDrillFilter === 'all' 
+                ? drillsData 
+                : drillsData.filter(d => d.category.toLowerCase().includes(currentDrillFilter.toLowerCase()));
+
+            filtered.forEach(drill => {
+                const card = document.createElement('div');
+                card.className = 'bg-soccer-card border border-soccer-border rounded-3xl p-6 space-y-4 hover:border-pitch/40 transition-all shadow-lg flex flex-col justify-between';
+                card.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold px-3 py-1 rounded-full bg-pitch/10 text-pitch uppercase">${drill.category}</span>
+                            <span class="text-xs text-slate-400 font-semibold"><i class="fa-solid fa-stopwatch text-pitch mr-1"></i>${drill.duration}</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">${drill.title}</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed">${drill.goal}</p>
+                    </div>
+                    <div class="border-t border-soccer-border pt-4 space-y-2 text-xs text-slate-400">
+                        <p><strong class="text-slate-200">Niveau :</strong> ${drill.level}</p>
+                        <p><strong class="text-slate-200">Matériel :</strong> ${drill.equipment}</p>
+                        <div class="bg-slate-900 p-3 rounded-xl text-slate-300 mt-2">
+                            <strong>Protocole :</strong> ${drill.steps}
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterDrills(cat) {
+            currentDrillFilter = cat;
+            const buttons = document.querySelectorAll('.drill-filter-btn');
+            buttons.forEach(btn => {
+                if (btn.innerText.toLowerCase().includes(cat.toLowerCase()) || (cat === 'all' && btn.innerText === 'Tous')) {
+                    btn.className = "drill-filter-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-pitch text-soccer-dark";
+                } else {
+                    btn.className = "drill-filter-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-soccer-card border border-soccer-border text-slate-300 hover:text-white";
+                }
+            });
+            renderDrills();
+        }
+
+        // Contact Form Handler
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            const successBox = document.getElementById('contact-success');
+            successBox.classList.remove('hidden');
+            e.target.reset();
+            setTimeout(() => {
+                successBox.classList.add('hidden');
+            }, 6000);
+        }
+
+        // Initialize App on Load
+        window.onload = function() {
+            renderPositions();
+            renderTutorials();
+            renderDrills();
+        };
+    </script>
+</body>
+</html>
